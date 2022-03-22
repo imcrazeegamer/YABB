@@ -2,7 +2,7 @@
 Kex - Kivy extension
 """
 
-import os
+import os, sys
 import random
 import time
 import numpy as np

@@ -3,6 +3,7 @@ from gui import widgets, ping, pong, restart_script
 from logic.game import Game
 
 
+TITLE = 'Yet Another Bot Battler'
 FPS = 60
 DEFAULT_AUTOPLAY = 2
 PLAYER_TOKEN_SPRITE = str(Path.cwd() / 'gui' / 'token.png')
@@ -26,14 +27,13 @@ COLORS = [
 class App(widgets.App):
     def __init__(self):
         super().__init__()
-        self.title = 'Yet Another Bot Battler'
-        self.detailed_mode = True
+        self.title = TITLE
+        self.detailed_mode = False
         self.auto_play = False
         self.auto_play_interval = 1000/DEFAULT_AUTOPLAY
         self.game = Game()
         self.im = widgets.InputManager(app_control_defaults=True)
         self.last_turn = ping()
-        self.im.register('Toggle details', '^ d', self.toggle_detailed_mode)
         self.im.register('Toggle play', 'spacebar', self.toggle_auto_play)
         self.hook_mainloop(FPS)
         self.make_widgets()
@@ -54,9 +54,6 @@ class App(widgets.App):
     @property
     def player_count(self):
         return len(self.game.players_bots)
-
-    def toggle_detailed_mode(self, *a):
-        self.detailed_mode = not self.detailed_mode
 
     def toggle_auto_play(self, *a):
         self.auto_play = not self.auto_play
@@ -105,6 +102,8 @@ class App(widgets.App):
             self.player_tokens.append(token)
 
     def refresh_gui(self):
+        debug_str = f' -- DEBUG MODE' if self.game.is_debug else ''
+        self.title = f'{TITLE}{debug_str}'
         self.menu_bar.refresh()
         self.score_frame.set_scores(self.game.scores)
         self.refresh_grid()
@@ -173,15 +172,19 @@ class ScoreFrame(widgets.AnchorLayout):
 class MenuBar(widgets.BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.add(widgets.Button(text='Autoplay /s:', on_release=self.focus_tps))
-        self.tps_entry = self.add(widgets.Entry(on_text=self.set_tps_text))
-        self.tps_entry.set_size(x=60)
         self.play_button = widgets.Button(on_release=self.toggle_auto_play)
         self.add(self.play_button)
+        self.add(widgets.Button(text='Autoplay /s:', on_release=self.focus_tps))
+        self.tps_entry = self.add(widgets.Entry(on_text=self.set_tps_text))
+        self.tps_entry.set_size(x=40)
+        self.detailed = self.add(widgets.CheckBox(active=self.app.detailed_mode))
+        self.detailed.bind(active=self.set_detailed)
+        self.detailed.set_size(x=20)
+        self.add(widgets.Label(text='Detailed')).set_size(x=60)
         for text, callback in [
             ('Single turn', self.do_single),
-            ('New game', self.do_new),
             ('Debug', self.do_debug),
+            ('New game', self.do_new),
             ('Restart', self.do_restart),
             ('Quit', self.do_quit),
         ]:
@@ -205,6 +208,7 @@ class MenuBar(widgets.BoxLayout):
         self.app.toggle_auto_play()
 
     def do_single(self, *a):
+        self.app.auto_play = False
         self.app.game.do_turn()
 
     def do_new(self, *a):
@@ -221,3 +225,6 @@ class MenuBar(widgets.BoxLayout):
 
     def refresh(self):
         self.play_button.text = 'Pause' if self.app.auto_play else 'Play'
+
+    def set_detailed(self, *a):
+        self.app.detailed_mode = self.detailed.active
