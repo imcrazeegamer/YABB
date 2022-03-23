@@ -10,6 +10,7 @@ class API:
         self._board = None
         self._players_loc = None
         self._scores = None
+        self._map_size = None
 
     def update(self, game):
         if isinstance(game, logic.game.Game):
@@ -17,6 +18,7 @@ class API:
             self._board = game.board
             self._players_loc = game.players_loc
             self._scores = game.scores
+            self._map_size = game.map_size
 
     @property
     def turn(self):
@@ -39,7 +41,7 @@ class API:
 
     def check_valid_move(self, player_id, move_vector):
         player_loc = self._players_loc[player_id]
-        return logic.game.Game.check_valid_move(move_vector, player_loc)
+        return logic.game.Game.check_valid_move(self._map_size, move_vector, player_loc)
 
     def check_location_equal(self, loc1, loc2):
         return np.alltrue(loc1 == loc2)

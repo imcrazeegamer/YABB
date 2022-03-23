@@ -25,11 +25,10 @@ class CrazeeSimpleBot(bots.api.Bot):
                 #print(f"Crazee: Found Valid Move {move}")
                 return move
             #print("Move Is Not Allowed")
-        print(f"CrazeeBot: id {self.bot_id}, pos:{api.players_location[self.bot_id]} Not Moving")
+        #print(f"CrazeeBot: id {self.bot_id}, pos:{api.players_location[self.bot_id]} Not Moving")
         return [0, 0]
 
     def gen_possible_moves(self):
-
         return np.array([[0, 0],
                          [0, 1],
                          [1, 0],

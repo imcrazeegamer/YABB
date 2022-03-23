@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from gui import widgets, ping, pong, restart_script
-from logic.game import Game, MAP_SIZE, MAX_TURNS, MINIMUM_MAP_SIZE
+from logic.game import Game, DEFAULT_MAP_SIZE, DEFAULT_MAX_TURNS, MINIMUM_MAP_SIZE
 from bots import BOT_CLASSES
 
 
@@ -299,7 +299,7 @@ class NewGameConfig(widgets.AnchorLayout):
         super().__init__(**kwargs)
         main_frame = self.add(widgets.BoxLayout(orientation='vertical'))
         main_frame.add(widgets.Label(text='Max turns:')).set_size(y=35)
-        self.max_turns = main_frame.add(widgets.Entry(text=str(MAX_TURNS)))
+        self.max_turns = main_frame.add(widgets.Entry(text=str(DEFAULT_MAX_TURNS)))
         self.bot_selector = main_frame.add(BotSelector())
         self.mapsize_selector = main_frame.add(MapSizeSelector())
         start_btn = widgets.Button(text='Start new game', on_release=self.do_new_game)
@@ -310,7 +310,7 @@ class NewGameConfig(widgets.AnchorLayout):
         try:
             max_turns = int(self.max_turns.text)
         except ValueError:
-            max_turns = MAX_TURNS
+            max_turns = DEFAULT_MAX_TURNS
         max_turns = max(1, max_turns)
         self.app.do_new_game(
             bots=self.bot_selector.selected_bots,
@@ -345,10 +345,10 @@ class MapSizeSelector(widgets.BoxLayout):
         super().__init__(**kwargs)
         self.set_size(y=35)
         self.add(widgets.Label(text='Map size:'))
-        self.config_y = self.add(widgets.Entry(text=str(MAP_SIZE[0])))
+        self.config_y = self.add(widgets.Entry(text=str(DEFAULT_MAP_SIZE[0])))
         self.config_y.set_size(x=40)
         self.add(widgets.Label(text=f'×')).set_size(x=40)
-        self.config_x = self.add(widgets.Entry(text=str(MAP_SIZE[1])))
+        self.config_x = self.add(widgets.Entry(text=str(DEFAULT_MAP_SIZE[1])))
         self.config_x.set_size(x=40)
 
     @property
@@ -357,10 +357,10 @@ class MapSizeSelector(widgets.BoxLayout):
         try:
             x = int(x)
         except ValueError:
-            x = MAP_SIZE[0]
+            x = DEFAULT_MAP_SIZE[0]
         y = self.config_y.text
         try:
             y = int(y)
         except ValueError:
-            y = MAP_SIZE[1]
+            y = DEFAULT_MAP_SIZE[1]
         return max(x, MINIMUM_MAP_SIZE[0]), max(y, MINIMUM_MAP_SIZE[1])
