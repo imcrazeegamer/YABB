@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from gui import widgets, ping, pong, restart_script
-from logic.game import Game, MAP_SIZE, MAX_TURNS
+from logic.game import Game, MAP_SIZE, MAX_TURNS, MINIMUM_MAP_SIZE
 from bots import BOT_CLASSES
 
 
@@ -107,7 +107,8 @@ class GameGUI(widgets.AnchorLayout):
 
     def make_widgets(self):
         main_frame = self.add(widgets.BoxLayout())
-        self.score_frame = ScoreFrame().set_size(x=250)
+        self.score_frame = ScoreFrame(padding=10).set_size(x=250)
+        self.score_frame.make_bg((0.05, 0.15, 0.25, 1))
         main_frame.add(self.score_frame)
         cy, cx = self.game.board.shape
         main_grid = widgets.GridLayout(cols=cx, rows=cy)
@@ -344,23 +345,22 @@ class MapSizeSelector(widgets.BoxLayout):
         super().__init__(**kwargs)
         self.set_size(y=35)
         self.add(widgets.Label(text='Map size:'))
-        self.config_y = self.add(widgets.Entry(text='5'))
+        self.config_y = self.add(widgets.Entry(text=str(MAP_SIZE[0])))
         self.config_y.set_size(x=40)
         self.add(widgets.Label(text=f'×')).set_size(x=40)
-        self.config_x = self.add(widgets.Entry(text='5'))
+        self.config_x = self.add(widgets.Entry(text=str(MAP_SIZE[1])))
         self.config_x.set_size(x=40)
 
     @property
     def selected_size(self):
-        dx, dy = MAP_SIZE
         x = self.config_x.text
         try:
             x = int(x)
         except ValueError:
-            x = dx
+            x = MAP_SIZE[0]
         y = self.config_y.text
         try:
             y = int(y)
         except ValueError:
-            y = dy
-        return max(x, dx), max(y, dy)
+            y = MAP_SIZE[1]
+        return max(x, MINIMUM_MAP_SIZE[0]), max(y, MINIMUM_MAP_SIZE[1])

@@ -1,6 +1,7 @@
 import numpy as np
 from bots.api import API, Bot
 # Settings
+MINIMUM_MAP_SIZE = (2, 2)
 MAP_SIZE = (5, 5)
 DEFAULT_PLAYER_AMOUNT = 4
 MAX_TURNS = 100
