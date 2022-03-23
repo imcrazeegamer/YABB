@@ -1,6 +1,7 @@
 import numpy as np
 from bots.api import API, Bot
 # Settings
+MINIMUM_MAP_SIZE = (2, 2)
 MAP_SIZE = (5, 5)
 DEFAULT_PLAYER_AMOUNT = 4
 MAX_TURNS = 100
@@ -100,7 +101,7 @@ class Game:
 
     def get_winner(self):
         if self.is_game_over:
-            return np.argmax(self.scores)
+            return np.argmax(self.scores) - 1
         return None
 
     def toggle_debug(self):
@@ -139,6 +140,3 @@ class Game:
                     if dest[0] >= 0 and dest[1] >= 0:
                         return True
         return False
-
-
-
