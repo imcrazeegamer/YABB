@@ -1,7 +1,7 @@
 
 import numpy as np
 
-import logic.game
+import logic
 
 
 class API:
@@ -27,7 +27,7 @@ class API:
         return self._board
 
     def get_score(self, player_id):
-        return self._scores[player_id]
+        return self._scores[player_id+1]
 
     @property
     def players_location(self):
@@ -41,6 +41,17 @@ class API:
         player_loc = self._players_loc[player_id]
         return logic.game.Game.check_valid_move(move_vector, player_loc)
 
+    def check_location_equal(self, loc1, loc2):
+        return np.alltrue(loc1 == loc2)
+
+    def location_in_array(self, loc, array):
+        for aloc in array:
+            if self.check_location_equal(loc, aloc):
+                return True
+        return False
+
+    def check_cell_color(self, bot_id, loc):
+        return self.board[loc[0], loc[1]] == bot_id + 1
 
 # This is the Base Bot, if you want to make your own call super in your init and override bot_logic
 class Bot:

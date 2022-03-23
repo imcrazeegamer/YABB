@@ -1,4 +1,6 @@
 from pathlib import Path
+
+import bots.crazeeBot
 from gui import widgets, ping, pong, restart_script
 from logic.game import Game
 
