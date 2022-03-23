@@ -100,7 +100,7 @@ class Game:
 
     def get_winner(self):
         if self.is_game_over:
-            return np.argmax(self.scores)
+            return np.argmax(self.scores) - 1
         return None
 
     def toggle_debug(self):
@@ -139,6 +139,3 @@ class Game:
                     if dest[0] >= 0 and dest[1] >= 0:
                         return True
         return False
-
-
-

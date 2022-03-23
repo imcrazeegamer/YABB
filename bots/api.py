@@ -55,6 +55,9 @@ class API:
 
 # This is the Base Bot, if you want to make your own call super in your init and override bot_logic
 class Bot:
+    say = '"say" not specified'
+    name = 'missing name'
+
     def __init__(self, api, bot_id):
         self.bot_id = bot_id
         self.score = api.get_score(bot_id)

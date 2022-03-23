@@ -3,6 +3,8 @@ import numpy as np
 
 
 class CrazeeSimpleBot(bots.api.Bot):
+    name = 'CrazeeBot'
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = self.gen_possible_moves()
@@ -40,3 +42,4 @@ class CrazeeSimpleBot(bots.api.Bot):
                          ])
 
 
+CLS = CrazeeSimpleBot

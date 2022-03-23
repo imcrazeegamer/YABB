@@ -576,9 +576,8 @@ class DropDownFrame(kvDropDown, KexWidget):
 
 
 class DropDownSelect(Button):
-    def __init__(self, callback, *args, **kwargs):
+    def __init__(self, *args, callback=None, **kwargs):
         super().__init__(*args, **kwargs)
-        assert callable(callback)
         self.callback = callback
         self.dropdown = DropDownFrame()
         self.dropdown.make_bg((0,0,0,0.75))
@@ -586,7 +585,8 @@ class DropDownSelect(Button):
 
     def invoke_option(self, index, label):
         self.text = label
-        self.callback(index, label)
+        if callable(self.callback):
+            self.callback(index, label)
         self.dropdown.dismiss()
 
     def set_options(self, options):
