@@ -61,9 +61,11 @@ class Bot:
     name = 'missing name'
 
     def __init__(self, api, bot_id):
-        self.bot_id = bot_id
-        self.score = api.get_score(bot_id)
+        self.__bot_id = bot_id
+
+    @property
+    def bot_id(self):
+        return self.__bot_id
 
     def bot_logic(self, api):
-        self.score = api.get_score(self.bot_id)
-        return np.random.randint(-1, 2, (2,), dtype=int)
+        return np.zeros(2, dtype=np.int)
