@@ -52,14 +52,15 @@ class Game:
                 continue
             self.players_loc[i] = dest
 
-            if self._multi_player_check(i, dest):
-                self.board[dest[0], dest[1]] = 0
-            else:
-                self.board[dest[0], dest[1]] = i+1
-
             if self.is_debug:
                 print(f"Player {i} is Moving To {dest}")
                 print(self.board)
+
+        for i, pos in enumerate(self.players_loc):
+            if self._multi_player_check(i, pos):
+                self.board[pos[0], pos[1]] = 0
+            else:
+                self.board[pos[0], pos[1]] = i + 1
 
     def _board_init(self, map_size):
         self.board = np.zeros(shape=map_size, dtype=int)
