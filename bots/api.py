@@ -11,7 +11,7 @@ class API:
         self._players_loc = None
         self._scores = None
         self._map_size = None
-
+        self._is_game_over = False
     def update(self, game):
         if isinstance(game, logic.game.Game):
             self._turn = game.turn
@@ -19,6 +19,7 @@ class API:
             self._players_loc = game.players_loc
             self._scores = game.scores
             self._map_size = game.map_size
+            self._is_game_over = game.is_game_over
 
     @property
     def turn(self):
@@ -27,6 +28,14 @@ class API:
     @property
     def board(self):
         return self._board
+
+    @property
+    def map_size(self):
+        return self._map_size
+
+    @property
+    def is_game_over(self):
+        return self._is_game_over
 
     def get_score(self, player_id):
         return self._scores[player_id+1]
@@ -47,10 +56,13 @@ class API:
         return np.alltrue(loc1 == loc2)
 
     def location_in_array(self, loc, array):
-        for aloc in array:
+        return self.find_location_in_array(loc, array) is not None
+
+    def find_location_in_array(self, loc, array):
+        for i, aloc in enumerate(array):
             if self.check_location_equal(loc, aloc):
-                return True
-        return False
+                return i
+        return None
 
     def check_cell_color(self, bot_id, loc):
         return self.board[loc[0], loc[1]] == bot_id + 1
@@ -62,8 +74,8 @@ class Bot:
 
     def __init__(self, api, bot_id):
         self.bot_id = bot_id
-        self.score = api.get_score(bot_id)
+        # self.score = api.get_score(bot_id)
 
     def bot_logic(self, api):
-        self.score = api.get_score(self.bot_id)
+        # self.score = api.get_score(self.bot_id)
         return np.random.randint(-1, 2, (2,), dtype=int)
