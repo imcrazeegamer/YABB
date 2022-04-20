@@ -1,6 +1,6 @@
 # YABB
 ## Yet Another Bot Battler
-
+![YYAB-ExampleGame](https://user-images.githubusercontent.com/29058721/164315451-c49472ea-cef3-4881-a796-b5366d494837.gif)
 #### A Game where you:
 - Code Bots With An API.
 - Watch Them Play A Simple Board Game.
