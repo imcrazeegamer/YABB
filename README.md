@@ -14,3 +14,5 @@
 - When a Player moves onto a cell if it's empty it becomes their color
 - If the cell is not empty then the cell becomes grey
 - The Player with the most cells at the end of the game wins
+
+Big Thanks to [Ariel Horwitz](https://github.com/ArielHorwitz) for making the GUI
